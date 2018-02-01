@@ -71,18 +71,9 @@ const http = new XMLHttpRequest();
 
 // AddWalkscore();
 // AddKingCountyParcelViewer();
-// AddKirklandPermits();
+// AddKirklandPermits()
 
-
-function addDistance() {
-  $("#ReactDataTableRow_1").append('<td class="column column_10 col_distance">' +
-  '<div class="FavoriteButtonWrapper" data-rf-test-id="table-view-fav-1" data-rf-test-name="favoriteButton" aria-label="Favorite this home" role="button">' + 
-  '</div></td>'
-  );
-  alert("Hello World");  
-}
-
-function getDirectionInfo(source, dest) {
+async function getDirectionInfo(source, dest) {
   gMapRequest = 'https://maps.googleapis.com/maps/api/distancematrix/json?' + 
     'origins=' + source['lat'] + ',' + source['long'] +
     '&destinations=' + dest['lat'] + ',' + dest['long'] +
@@ -91,44 +82,42 @@ function getDirectionInfo(source, dest) {
   http.onreadystatechange = function() {
     if (http.readyState == 4) {
       console.log("got: ", http.responseText);
-      return (http.responseText);
+      // return (http.responseText);
     }
   }
   http.send();
 }
 
-function getDistances() {
-  console.log($('.tableList'));
-  childCount = $('.tableList')[0].childElementCount;
-  console.log(childCount);
-  addresses = [];
-  
+async function getDistances() {
+  // Hard-coded origin - MSFT
   source = {
     'lat':'47.641484',
     'long':'-122.125560'
   };
 
+  nHouses = $('.tableList')[0].childElementCount;
+  console.log('found ', nHouses, 'houses');
+
+  var results = {};
   var dest = {};
-  for (i = 0; i < childCount; i++) {
+  for (i = 0; i < nHouses; i++) {
     obj = $('#ReactDataTableRow_' + i + '>.column.column_1.col_address>div>script')[0];
-    loc = JSON.parse(obj.text)['location']['geo'];
-    dest['lat'] = loc['latitude'];
-    dest['long'] = loc['longitude'];
-    console.log(dest);
-
-    getDirectionInfo(source, dest);
-
-    addresses.push(dest);
-    
-    
+    if (obj != undefined) {
+      loc = JSON.parse(obj.text)['location']['geo'];
+      dest['lat'] = loc['latitude'];
+      dest['long'] = loc['longitude'];
+      console.log("sending request ", dest);
+      results[i] = await getDirectionInfo(source, dest);
+      // await sleep(500);
+    }
   }
-  console.log(JSON.stringify(addresses))
+
+  console.log(results);
 }
 
 $(document).ready(function() {
-	addDistance();
   getDistances();
-  });
+});
 
 
 
