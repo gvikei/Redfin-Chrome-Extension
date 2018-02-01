@@ -1,0 +1,27 @@
+AIzaSyBM44WGzQ5gWsz8sSkFn-zZNYbsau98aOg
+
+GET https://maps.googleapis.com/maps/api/distancematrix/json?origins=47.641484, -122.125560&destinations=47.8006419,-122.3612522&key=AIzaSyBM44WGzQ5gWsz8sSkFn-zZNYbsau98aOg&mode=driving
+
+
+{
+   "destination_addresses" : [ "21824-21898 96th Ave W, Edmonds, WA 98020, USA" ],
+   "origin_addresses" : [ "16011 NE 36th Way, Redmond, WA 98052, USA" ],
+   "rows" : [
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "38.5 km",
+                  "value" : 38464
+               },
+               "duration" : {
+                  "text" : "32 mins",
+                  "value" : 1910
+               },
+               "status" : "OK"
+            }
+         ]
+      }
+   ],
+   "status" : "OK"
+}
