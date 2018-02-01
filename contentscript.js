@@ -87,9 +87,12 @@ function getDistances() {
   console.log(childCount);
   addresses = [];
   for (i = 0; i < childCount; i++) {
-    addr = $('#ReactDataTableRow_' + i + '>.column.column_1.col_address>div>a')[0].title;
-    console.log(addr);
-    addresses.push(addr);
+    obj = $('#ReactDataTableRow_' + i + '>.column.column_1.col_address>div>script')[0];
+    loc = JSON.parse(obj.text)['location']['geo'];
+    latitude = loc['latitude'];
+    longitude = loc['longitude'];
+    console.log(loc);
+    addresses.push(loc);
   }
   console.log(JSON.stringify(addresses))
 }
