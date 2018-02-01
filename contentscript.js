@@ -1,3 +1,4 @@
+const http = new XMLHttpRequest();
 
 // // Some global variables indicating metadata about the property.  Many
 // // functions use these.
@@ -81,18 +82,45 @@ function addDistance() {
   alert("Hello World");  
 }
 
+function getDirectionInfo(source, dest) {
+  gMapRequest = 'https://maps.googleapis.com/maps/api/distancematrix/json?' + 
+    'origins=' + source['lat'] + ',' + source['long'] +
+    '&destinations=' + dest['lat'] + ',' + dest['long'] +
+    '&key=AIzaSyBM44WGzQ5gWsz8sSkFn-zZNYbsau98aOg&mode=driving';
+  http.open("GET", gMapRequest, true);
+  http.onreadystatechange = function() {
+    if (http.readyState == 4) {
+      console.log("got: ", http.responseText);
+      return (http.responseText);
+    }
+  }
+  http.send();
+}
+
 function getDistances() {
   console.log($('.tableList'));
   childCount = $('.tableList')[0].childElementCount;
   console.log(childCount);
   addresses = [];
+  
+  source = {
+    'lat':'47.641484',
+    'long':'-122.125560'
+  };
+
+  var dest = {};
   for (i = 0; i < childCount; i++) {
     obj = $('#ReactDataTableRow_' + i + '>.column.column_1.col_address>div>script')[0];
     loc = JSON.parse(obj.text)['location']['geo'];
-    latitude = loc['latitude'];
-    longitude = loc['longitude'];
-    console.log(loc);
-    addresses.push(loc);
+    dest['lat'] = loc['latitude'];
+    dest['long'] = loc['longitude'];
+    console.log(dest);
+
+    getDirectionInfo(source, dest);
+
+    addresses.push(dest);
+    
+    
   }
   console.log(JSON.stringify(addresses))
 }

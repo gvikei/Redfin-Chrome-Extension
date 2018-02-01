@@ -12,6 +12,8 @@
   ],
   "permissions": [
     "tabs",
-    "*://*.redfin.com/*"
-  ]
+    "*://*.redfin.com/*",
+    "*://*/"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://; object-src 'self'"
 }
